@@ -33,18 +33,18 @@ int main() {
     case 2:
       bPtr = malloc(R * C * sizeof(int) + R * sizeof(int *));
       lPtr = (int *)(bPtr + R);
-      for (int i = 0; i < C; ++i)
+      for (int i = 0; i < R; ++i)
         bPtr[i] = lPtr + C * i;
       break;
     case 3:
       bPtr = malloc(R * sizeof(int *));
-      for (int i = 0; i < C; ++i)
+      for (int i = 0; i < R; ++i)
         bPtr[i] = malloc(C * sizeof(int));
       break;
     case 4:
       bPtr = malloc(R * sizeof(int *));
       lPtr = malloc(R * C * sizeof(int));
-      for (int i = 0; i < C; ++i)
+      for (int i = 0; i < R; ++i)
         bPtr[i] = lPtr + C * i;
       break;
 
@@ -60,12 +60,14 @@ int main() {
     output(bPtr, C, R, n, max, min);
   }
   if (flag < 2) {
+    free(max);
+    free(min);
     switch (n) {
     case 2:
       free(bPtr);
       break;
     case 3:
-      for (int i = 0; i < C; ++i)
+      for (int i = 0; i < R; ++i)
         free(bPtr[i]);
       free(bPtr);
       break;
@@ -143,7 +145,7 @@ void maxmin(int **a, int c, int r, int n, int *max, int *min) {
 
   for (int i = 0; i < c; ++i) {
     for (int j = 0; j < r; ++j) {
-      int p = n < 3 ? *((int *)a + j * r + i) : a[j][i];
+      int p = n < 3 ? *((int *)a + j * c + i) : a[j][i];
       if (p < min[i])
         min[i] = p;
     }
